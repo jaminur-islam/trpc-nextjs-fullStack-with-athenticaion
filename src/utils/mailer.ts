@@ -15,12 +15,14 @@ export async function sendLoginEmail({email , url , token}: {token: string,email
   })
 
   const info = await transporter.sendMail({
-    from: '"jaminur Doe" <j.doe@gmail.com>',
+    from: 'jaminurislam350@gmail.com',
     to : email,
     subject: "Login to your account",
-    html : `Login by clicking here <a href=${url}/login?token=${token}> click </a>`
+    html : `Login by clicking here <a href=${url}/login#token=${token}> click </a>`
 
   })
+
+  nodemailer.getTestMessageUrl(info)
 
 
   console.log(`Preview URL: ${nodemailer.getTestMessageUrl(info)}`)

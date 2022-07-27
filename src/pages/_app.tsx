@@ -6,9 +6,23 @@ import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import superjson from "superjson";
 import { AppRouter } from "../server/router/app.router";
 import { url } from "../../src/constants";
+import { trpc } from "../utils/trpc";
+import { UserContextProvider } from "../context/user.context";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  const { data, error, isLoading } = trpc.useQuery(["users.me"]);
+
+  if (isLoading) {
+    return <div> loading ... </div>;
+  }
+
+  return (
+    <UserContextProvider value={data}>
+      <main>
+        <Component {...pageProps} />
+      </main>
+    </UserContextProvider>
+  );
 }
 
 // todo add appRouter to generic[add AppRouter]
@@ -45,3 +59,6 @@ export default withTRPC<AppRouter>({
   },
   ssr: false,
 })(MyApp);
+
+// https://www.youtube.com/watch?v=dXRRY37MPuk
+// live chat app
